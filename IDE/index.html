@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="description"
+      content="Online compiler and IDE powered by Judge0 API"
+    />
+    <meta name="keywords" content="online compiler, online ide" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <script src="offline/jquery.min.js"></script>
+
+    <script src="offline/goldenlayout.min.js"></script>
+    <link rel="stylesheet" href="offline/goldenlayout-base.css" />
+    <link rel="stylesheet" href="offline/goldenlayout-dark-theme.css" />
+    <script
+      type="text/javascript"
+      src="third_party/monaco-editor-0.18.0/min/vs/loader.js"
+    ></script>
+    <script>
+      require.config({
+        paths: {
+          vs: "third_party/monaco-editor-0.18.0/min/vs",
+        },
+      });
+    </script>
+
+    <link rel="stylesheet" href="offline/semantic.min.css" />
+    <script src="offline/semantic.min.js"></script>
+
+    <link href="offline/exo2.css" rel="stylesheet" />
+
+    <script type="text/javascript" src="third_party/download.js"></script>
+
+    <script type="text/javascript" src="js/ide.js"></script>
+
+    <link type="text/css" rel="stylesheet" href="css/ide.css" />
+    <link
+      href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp"
+      rel="stylesheet"
+    />
+    <title>Recode IDE</title>
+    <style>
+      html {
+        scroll-behavior: smooth;
+      }
+      ::-webkit-scrollbar {
+        width: 7px;
+      }
+      ::-webkit-scrollbar-track {
+        border-radius: 7px;
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: rgb(155, 155, 155);
+        border-radius: 7px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: rgb(110, 110, 110);
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="site-navigation" class="ui inverted menu">
+      <div id="site-header" class="header item" style="color: black">
+        <h2 style="font-family: poppins">Recode</h2>
+      </div>
+      <div class="left menu">
+        <div class="item fitted borderless left-padding">
+          <select id="select-language" class="ui dropdown"></select>
+        </div>
+        <div class="item fitted borderless left-padding">
+          <button
+            id="run-btn"
+            class="ui primary icon button"
+            style="display: flex; align-items: center"
+          >
+            Run
+            <span
+              class="material-icons-outlined"
+              style="font-size: large; color: rgb(48, 48, 48)"
+            >
+              play_arrow
+            </span>
+          </button>
+        </div>
+        <div class="item fitted borderless left-padding">
+          <button
+            id="submit-btn"
+            class="ui green icon button"
+            style="display: flex; align-items: center"
+          >
+            Submit
+            <span
+              class="material-icons-outlined"
+              style="font-size: large; color: rgb(46, 46, 46)"
+            >
+              arrow_forward
+            </span>
+          </button>
+          <!-- <pre id="tutorials" style="color: cyan; font-size: large;"></pre> -->
+        </div>
+        <!-- <div class="item fitted borderless left-padding">
+                <pre id="questionIdText" style="color: orangered; font-size: large;"></pre>
+            </div> -->
+        <div class="item fitted borderless left-padding">
+          <select
+            name="Theme"
+            id="Theme"
+            style="height: fit-content"
+            class="ui dropdown"
+          >
+            <option value="vs">Light</option>
+            <option value="vs-dark">Dark</option>
+            <option value="hc-black">Dark Contrast</option>
+          </select>
+        </div>
+      </div>
+      <div class="right menu">
+        <a
+          class="link item"
+          id="tutorials"
+          style="
+            color: rgb(35, 35, 35);
+            font-size: large;
+            background: rgb(186, 218, 255);
+            border: 0.5mm solid rgb(52, 52, 52);
+            height: fit-content;
+            padding: 7px 15px;
+            border-radius: 6mm;
+            font-size: large;
+          "
+        ></a>
+        <a
+          class="link item"
+          id="questionIdText"
+          style="
+            color: rgb(35, 35, 35);
+            font-size: large;
+            background: rgb(196, 234, 207);
+            border: 0.5mm solid rgb(52, 52, 52);
+            height: fit-content;
+            padding: 7px 15px;
+            border-radius: 6mm;
+            margin-right: 10px;
+          "
+        ></a>
+      </div>
+    </div>
+
+    <div id="site-content"></div>
+
+    <div id="site-modal" class="ui basic modal">
+      <div class="header">
+        <i></i>
+        <span id="title"></span>
+      </div>
+      <div class="content"></div>
+      <div class="actions">
+        <div class="ui small inverted labeled icon cancel button">
+          <i class="remove icon"></i>
+          Close (ESC)
+        </div>
+      </div>
+    </div>
+
+    <div id="site-settings" class="ui modal">
+      <i class="close icon"></i>
+      <div class="header">
+        <i class="cog icon"></i>
+        Settings
+      </div>
+      <div class="content">
+        <div class="ui form">
+          <div class="inline fields">
+            <label>Editor Mode</label>
+            <div class="field">
+              <div class="ui radio checkbox">
+                <input type="radio" name="editor-mode" checked="checked" />
+                <label>Normal</label>
+              </div>
+            </div>
+            <div class="field">
+              <div class="ui radio checkbox">
+                <input type="radio" name="editor-mode" />
+                <label>Vim</label>
+              </div>
+            </div>
+            <div class="field">
+              <div class="ui radio checkbox">
+                <input type="radio" name="editor-mode" />
+                <label>Emacs</label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script>
+    function getCookie(cname) {
+      var name = cname + "=";
+      var ca = document.cookie.split(";");
+      for (var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == " ") c = c.substring(1);
+        if (c.indexOf(name) != -1) return c.substring(name.length, c.length);
+      }
+      return "";
+    }
+    let a = getCookie("username") === "ADMIN";
+    let b = getCookie("username");
+    b = b.slice(0, 4);
+    let c = b == "IARE" || b == "iare";
+    $(document).ready(function () {
+      let branch = getCookie("branch");
+      let username = getCookie("username");
+      if (branch) {
+        $("#userImage").attr(
+          "src",
+          "https://iare-data.s3.ap-south-1.amazonaws.com/uploads/" +
+            branch +
+            "/" +
+            username +
+            ".jpg"
+        );
+        document.getElementById("username").innerHTML = username;
+      }
+    });
+  </script>
+
+  <script>
+    function checkKeyCode(evt) {
+      var evt = evt ? evt : evt ? evt : null;
+
+      if (
+        //F12, F5
+        evt.keyCode == 123 ||
+        evt.keyCode == 116
+      ) {
+        evt.keyCode = 0;
+        return false;
+      }
+
+      //Prevent Ctrl+S, Ctrl+P, Ctrl+U (and Ctrl+W for old browsers and Edge)
+      // evt = evt || window.event;
+      if (!evt.ctrlKey) return;
+      var code = evt.which || evt.keyCode;
+
+      switch (code) {
+        case 88:
+        case 67:
+        case 86:
+          if (a) break;
+        case 83: //Block Ctrl+S
+        case 80: //Block Ctrl+P
+        case 85: //Block Ctrl+U
+        case 87: //Block Ctrl+W -- Not work in Chrome and new Firefox
+          evt.preventDefault();
+          evt.stopPropagation();
+          break;
+      }
+
+      if (
+        event.ctrlKey &&
+        event.shiftKey &&
+        (event.keyCode == 73 || event.keyCode == 74 || event.keyCode == 67)
+      ) {
+        return false;
+      }
+    }
+
+    function handle(event) {
+      event.preventDefault();
+      event.clipboardData.setData("text/plain", "NOT ALLOWED!");
+    }
+
+    if (!a && !c) {
+      document.onkeydown = checkKeyCode;
+
+      document.addEventListener("cut", handle);
+      document.addEventListener("copy", handle);
+      document.addEventListener("paste", (event) => {
+        event.preventDefault();
+        alert("PASTE DETECTED! PLEASE RELOAD");
+        document.getElementById("submit-btn").remove();
+        document.getElementById("site-content").innerHTML += null;
+      });
+    }
+
+    document.addEventListener("contextmenu", (event) => event.preventDefault());
+  </script>
+</html>
+<!-- 41228e -->

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="zxx">
+
+<head>
+  <meta charset="utf-8">
+  <title>Recode</title>
+
+  <!-- mobile responsive meta -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <!-- ** Plugins Needed for the Project ** -->
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="plugins/bootstrap/bootstrap.min.css">
+  <!-- slick slider -->
+  <link rel="stylesheet" href="plugins/slick/slick.css">
+  <!-- themefy-icon -->
+  <link rel="stylesheet" href="plugins/themify-icons/themify-icons.css">
+  <!--Favicon-->
+  <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
+  <link rel = "icon" type = "image/png" href = "../../images/logo-backup2.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins&display=swap"
+    rel="stylesheet"
+  />
+  <link
+      href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp"
+      rel="stylesheet">
+  <link rel="stylesheet" href="../css/style2.css">
+  <style>
+    .main-space{
+        background: white;
+        color: black;
+    }
+    .content .small{
+      color: rgb(76, 76, 76);
+    }
+    .content .big{
+      color: rgb(39, 39, 39);
+      overflow: hidden;
+      border-right: 0.05em solid orange;
+      width: 0;
+      animation: typing 1s steps(8, end) forwards, blink-caret 0.8s infinite;
+    }
+    .rside span{
+      color: gold;
+    }
+    .lside span{
+      color: rgba(0, 0, 0, 0.135);
+    }
+    .lsideup span{
+      color: rgb(138, 180, 248);
+    }
+    @keyframes typing {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+/* The typewriter cursor effect */
+@keyframes blink-caret {
+  from,
+  to {
+    border-color: transparent;
+  }
+  50% {
+    border-color: orange;
+  }
+}
+.nav-btn a:hover {
+        color: rgb(2, 109, 216) !important;
+        background: rgb(243, 248, 253) !important;
+        border: 0.4mm solid rgb(2, 109, 216) !important;
+        border-radius: 7mm !important;
+      }
+  </style>
+</head>
+
+<body>
+
+<!-- hero area -->
+
+<section class="main-space" id="parallax">
+  <%- include('../views/partials/header2.ejs') %>
+  <div class="lsideup"><span class="material-icons-round">
+science
+</span></div>
+  <div class="lside"><span class="material-icons-round">
+send
+</span></div>
+  <div class="content">
+    <div class="small">Welcome To</div>
+    <div class="big">RECODE</div>
+  </div>
+  <div class="rside">
+    <span class="material-icons-round">data_object</span>
+  </div>
+  </div>
+  <% if(!imgUsername) {%>
+  <a href="/login" id="start">Get Started</a>
+  <%} else {%>
+    <a href="/contest" id="start">Get Started</a>
+    <%}%>
+  <div class="line-circle">
+    <div class="lines"></div>
+    <div class="circle"></div>
+    <div class="lines"></div>
+  </div>
+</section>
+<section class="langs">
+  <div class="lang-img">
+    <img src="../images/Python.png" alt="" >
+  </div>
+  <div class="lang-content">
+    <div class="lang-title"><span class="material-icons-outlined">science</span>Experiments</div>
+    <div class="lang-body">Choose the right <br> programming language</div>
+    <div class="lang-body-small">
+      Recode provides you to choose your language of choice which brings out the best programmer in you 
+    </div>
+  </div>
+</section>
+
+<section class="ads">
+  <span class="ad" style="flex-grow: 1;">
+  <div class="adv">
+        <div class="adv-title" >
+      <span class="title" style="background: rgb(255, 228, 118);"><span class="material-icons-outlined">fitness_center</span>Tutorials</span></div>
+    <div class="adv-content">
+    <div class="adv-body">Practice coding challenges</div>
+    
+    <div class="adv-img">
+      <img src="../images/code.png" alt="">
+    </div>
+    </div>
+  </div>
+  </span>
+  <span class="ad">
+  <div class="adv">
+        <div class="adv-title">
+      <span class="title" style="background: rgb(186, 218, 255);"><span class="material-icons-outlined">leaderboard</span>Leaderboard</span><span class="title" style="background: rgb(183,243,151);"><span class="material-icons-outlined">person_outline</span>Dashboard</span></div>
+    <div class="adv-content">
+    <div class="adv-body">Review and Evaluate your performance with Leaderboard and Dashboard</div>
+    
+    <div class="adv-img">
+      <img src="../images/graph.png" alt="">
+    </div>
+    </div>
+  </div>
+  </span>
+</section>
+<%- include('../views/partials/footer') %>
+
+<!-- jQuery -->
+<script src="plugins/jQuery/jquery.min.js"></script>
+<!-- Bootstrap JS -->
+<script src="plugins/bootstrap/bootstrap.min.js"></script>
+<!-- slick slider -->
+<script src="plugins/slick/slick.min.js"></script>
+<!-- filter -->
+<script src="plugins/shuffle/shuffle.min.js"></script>
+
+<!-- Main Script -->
+<script src="js/script.js"></script>
+
+</body>
+</html>

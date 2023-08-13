@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="zxx">
+  <head>
+    <meta charset="utf-8" />
+    <title>Experiments</title>
+
+    <!-- mobile responsive meta -->
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1"
+    />
+    <!--Favicon-->
+    <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
+    <link rel="icon" href="images/favicon.ico" type="image/x-icon" />
+
+    <link
+      href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp"
+      rel="stylesheet"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="../css/style2.css" />
+  </head>
+
+  <body>
+    <!-- page title -->
+    <section class="main-area">
+      <%- include('../partials/header2') %>
+      <div class="area-left">
+        <img src="../images/code.png" alt="" />
+      </div>
+      <div class="area-right">
+        <div class="the-area-wrap">
+          <div class="area-titles">
+            <div class="atitle ahead">Recode</div>
+            <div class="atitle">Experiments</div>
+            <div class="atitle-small">Explore various contests.</div>
+          </div>
+          <div class="search">
+            <input
+              type="search"
+              name=""
+              id="search"
+              placeholder="Search Contests"
+              onkeyup="searchFunc()"
+            />
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- /page title -->
+
+    <!-- blog -->
+    <section class="contests">
+      <div class="contest-doodle"></div>
+      <div class="contests-container">
+        <div class="contests-title">Active Contests</div>
+        <div class="row">
+          <% for(let i = data.length-1; i >= 0; i--){ %> <% if
+          (data[i].contestDate === new Date().toISOString().slice(0,10)) { %>
+          <div class="contest">
+            <a <% if(data[i].contestPassword){ %>
+              href="contestPassword/<%= data[i].contestId %>" <%} else{%>
+              href="contests/<%= data[i].contestId %>" <%}%> target="_blank"
+              class="cardy active" >
+              <div class="act-tag">
+                <span class="material-icons-round"> star </span>Active &nbsp
+              </div>
+              <div class="card-content">
+                <div class="title"><%= data[i].contestName %></div>
+                <div class="details">
+                  <span class="dura">
+                    <% if (data[i].contestDuration) { %> <%=
+                    data[i].contestDuration + "M" %> <% } %>
+                    <div class="det-abs">Duration</div>
+                  </span>
+                  <% if (data[i].contestStartTime && data[i].contestEndTime) {
+                  %>
+                  <span class="dura2"
+                    ><%=
+                    data[i].contestStartTime.slice(0,2)+":"+data[i].contestStartTime.slice(2,4)
+                    %>
+                    <div class="det-abs">Start</div>
+                  </span>
+                  <span class="dura2"
+                    ><%=
+                    data[i].contestEndTime.slice(0,2)+":"+data[i].contestEndTime.slice(2,4)
+                    %>
+                    <div class="det-abs">End</div>
+                  </span>
+                  <% } %>
+                </div>
+                <div class="con-date">
+                  <% if (data[i].contestDate) { %>
+                  <b>Date: </b><%= data[i].contestDate %> <% } %>
+                </div>
+                <div class="participate">Participate</div>
+              </div>
+            </a>
+          </div>
+          <% } %> <% } %>
+        </div>
+      </div>
+      <div class="contests-container">
+        <div class="contests-title">Inactive Contests</div>
+        <div class="row">
+          <% for(let i = data.length-1; i >= 0; i--){ %> <% if
+          (data[i].contestDate !== new Date().toISOString().slice(0,10)) { %>
+          <div class="contest">
+            <a
+              href="contests/<%= data[i].contestId %>"
+              target="_blank"
+              class="cardy"
+            >
+              <div class="card-content">
+                <div class="title"><%= data[i].contestName %></div>
+                <div class="details">
+                  <span class="dura">
+                    <% if (data[i].contestDuration) { %> <%=
+                    data[i].contestDuration + "M" %> <% } %>
+                    <div class="det-abs">Duration</div>
+                  </span>
+                  <% if (data[i].contestStartTime && data[i].contestEndTime) {
+                  %>
+                  <span class="dura2"
+                    ><%=
+                    data[i].contestStartTime.slice(0,2)+":"+data[i].contestStartTime.slice(2,4)
+                    %>
+                    <div class="det-abs">Start</div>
+                  </span>
+                  <span class="dura2"
+                    ><%=
+                    data[i].contestEndTime.slice(0,2)+":"+data[i].contestEndTime.slice(2,4)
+                    %>
+                    <div class="det-abs">End</div>
+                  </span>
+                  <% } %>
+                </div>
+                <div class="con-date">
+                  <% if (data[i].contestDate) { %>
+                  <b>Date: </b><%= data[i].contestDate %> <% } %>
+                </div>
+                <div class="participate">Participate</div>
+              </div>
+            </a>
+          </div>
+          <% } %> <% } %>
+        </div>
+      </div>
+    </section>
+
+    <script>
+      const searchFunc = () => {
+        let value = document.getElementById("search").value;
+        value = value.toUpperCase();
+        let cards = document.querySelectorAll(".contest");
+        cards.forEach((card) => {
+          let cardVal = card.querySelector(".title").innerText;
+          cardVal = cardVal.toUpperCase();
+          if (cardVal.indexOf(value) >= 0) {
+            card.style.display = "block";
+          } else {
+            card.style.display = "none";
+          }
+        });
+      };
+    </script>
+    <%- include('../partials/footer') %>
+  </body>
+</html>
