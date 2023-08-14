@@ -91,7 +91,6 @@ exports.createExcel = (req, res) => {
     var uploadpath = "../quesxlsx" + name;
     file.mv(uploadpath, function (err) {
       if (err) {
-        console.log("File Upload Failed", name, err);
         res.send("Error Occured!");
       } else {
         let wb = xlsx.readFile("../quesxlsx" + name);
@@ -162,7 +161,6 @@ exports.createSet = (req, res) => {
     var uploadpath = "../quesxlsx" + name;
     file.mv(uploadpath, function (err) {
       if (err) {
-        console.log("File Upload Failed", name, err);
         res.send("Error Occured!");
       } else {
         let wb = xlsx.readFile("../quesxlsx" + name);
@@ -569,6 +567,58 @@ exports.deleteMultiple = (req, res) => {
 };
 
 exports.findAllContest = async (req, res) => {
+  //Main Code Starts From Try, this function is called below
+  const findSet = async (questionIdArray) => {
+    return Question.find({ questionId: { $in: questionIdArray } })
+      .then(async (question) => {
+        if (!question) {
+          return res.status(404).send({
+            success: false,
+            message: "Question not found with id " + req.params.contestId,
+          });
+        }
+        res.send(question);
+      })
+      .catch((err) => {
+        if (err.kind === "ObjectId") {
+          return res.status(404).send({
+            success: false,
+            message: "Question not found with id " + req.params.contestId,
+          });
+        }
+        return res.status(500).send({
+          success: false,
+          message: "Error retrieving question with id " + req.params.contestId,
+        });
+      });
+  };
+
+  //Main Code Starts From Try, this function is called below
+  const findContest = async () => {
+    Question.find({ contestId: req.params.contestId })
+      .then((question) => {
+        if (!question) {
+          return res.status(404).send({
+            success: false,
+            message: "Question not found with id " + req.params.contestId,
+          });
+        }
+        res.send(question);
+      })
+      .catch((err) => {
+        if (err.kind === "ObjectId") {
+          return res.status(404).send({
+            success: false,
+            message: "Question not found with id " + req.params.contestId,
+          });
+        }
+        return res.status(500).send({
+          success: false,
+          message: "Error retrieving question with id " + req.params.contestId,
+        });
+      });
+  };
+
   try {
     const contest = await contests.findOneSet(req);
     if (contest.multiset === true) {
@@ -606,60 +656,8 @@ exports.findAllContest = async (req, res) => {
         );
       });
     } else {
-      const result = await findContest();
-      return result;
+      findContest();
     }
-    const findSet = async (questionIdArray) => {
-      return Question.find({ questionId: { $in: questionIdArray } })
-        .then(async (question) => {
-          if (!question) {
-            return res.status(404).send({
-              success: false,
-              message: "Question not found with id " + req.params.contestId,
-            });
-          }
-          res.send(question);
-        })
-        .catch((err) => {
-          if (err.kind === "ObjectId") {
-            return res.status(404).send({
-              success: false,
-              message: "Question not found with id " + req.params.contestId,
-            });
-          }
-          return res.status(500).send({
-            success: false,
-            message:
-              "Error retrieving question with id " + req.params.contestId,
-          });
-        });
-    };
-
-    const findContest = async () => {
-      return Question.find({ contestId: req.params.contestId })
-        .then((question) => {
-          if (!question) {
-            return res.status(404).send({
-              success: false,
-              message: "Question not found with id " + req.params.contestId,
-            });
-          }
-          res.send(question);
-        })
-        .catch((err) => {
-          if (err.kind === "ObjectId") {
-            return res.status(404).send({
-              success: false,
-              message: "Question not found with id " + req.params.contestId,
-            });
-          }
-          return res.status(500).send({
-            success: false,
-            message:
-              "Error retrieving question with id " + req.params.contestId,
-          });
-        });
-    };
   } catch (error) {
     return res.send({
       success: false,

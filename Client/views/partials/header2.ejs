@@ -7,14 +7,14 @@
       </div>
       <div class="chapter-nav-btn">
         <button class="nav-btn"><a href="/">Home</a></button>
-        <!-- <button class="nav-btn"><a href="/about">About</a></button>-->
+        <!-- <button class="nav-btn"><a href="/about">About</a></button>
         <button class="nav-btn"><form action="/skill" method="POST" style="outline: none; border: none;">
             <a class="nav-link" onclick="this.parentNode.submit();" >Leaderboard</a>
-          </form></button>
+          </form></button>-->
         <% if(imgUsername){ %>
           <button class="nav-btn"><a href="/contest">Experiments</a></button>
-          <button class="nav-btn"><a href="/practice">Practice</a></button>
-          <button class="nav-btn"><a href="/qualifier_tests">Play House</a></button>
+          <!--<button class="nav-btn"><a href="/practice">Practice</a></button>
+          <button class="nav-btn"><a href="/qualifier_tests">Play House</a></button>-->
           <% } %>
           <% if (imgUsername){ %>
         <div class="nav-dots">
@@ -63,17 +63,15 @@
       </div>
       <div class="chapter-nav-btn2">
         <button class="nav-btn2" onclick="navslide()"><a href="#">Home <span class="material-icons">arrow_forward<span></a></button>
-        <button class="nav-btn2" onclick="navslide()"><a href="#">About <span class="material-icons">arrow_forward<span></span></a></button>
-        <button class="nav-btn2" onclick="navslide()"><a href="#">CodeChef Chapter <span class="material-icons">arrow_forward<span></span></a></button>
+        <!--<button class="nav-btn2" onclick="navslide()"><a href="#">About <span class="material-icons">arrow_forward<span></span></a></button>
         <button class="nav-btn2" onclick="navslide()"><form action="/skill" method="POST">
             <a class="nav-link" onclick="this.parentNode.submit();" style="padding: 0;">Leaderboard <span class="material-icons">arrow_forward<span></span></a>
-          </form></button>
+          </form></button>-->
           <% if (imgUsername){ %>
         <button class="nav-btn2" onclick="navslide()"><a href="/contest">Experiments <span class="material-icons">arrow_forward<span></span></a></button>
-        <button class="nav-btn2" onclick="navslide()"><a href="/practice">Practice <span class="material-icons">arrow_forward<span></span></a></button>
+        <!--<button class="nav-btn2" onclick="navslide()"><a href="/practice">Practice <span class="material-icons">arrow_forward<span></span></a></button>
         <button class="nav-btn2" onclick="navslide()"><a href="/qualifier_tests">Qualifier Test <span class="material-icons">arrow_forward<span></span></a></button>
-        <button class="nav-btn2" onclick="navslide()"><a href="/ResumeBuilder">Resume Builder <span class="material-icons">arrow_forward<span></span></a></button>
-        <button class="nav-btn2" onclick="navslide()"><a href="/resume/<%= imgUsername%>">My Resume <span class="material-icons">arrow_forward<span></span></a></button>
+          -->
         <button class="nav-btn2" onclick="navslide()"><a href="/profile">Profile <span class="material-icons">arrow_forward<span></span></a></button>
         <button class="nav-btn2" onclick="navslide()"><a href="/logout">Logout <span class="material-icons">arrow_forward<span></span></a></button>
         <% } else { %>

@@ -533,7 +533,6 @@ exports.forgotPass = (req, res) => {
         generateTextFromHTML: true,
         html: htmlToSend,
       };
-      console.log(replacements, mailOptions);
       smtpTransport.sendMail(mailOptions, (error, response) => {
         if (error) {
           console.log(error);

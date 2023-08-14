@@ -750,7 +750,6 @@
         </div>
         <script>
           var edit = document.querySelectorAll(".p-edit")
-          console.log(edit.length)
           var flipFlag=1
           edit.forEach((button)=>{
             button.addEventListener("click",()=>{
@@ -850,7 +849,6 @@
                   },5000)
                 },
                 error: function (error) {
-                  console.log(`Error ${JSON.stringify(error)}`);
                   alert.innerHTML="Some error occurred"
                   alert.style.transform="rotateY(0deg)"
                   setTimeout(()=>{
@@ -860,7 +858,6 @@
               })
               }
             catch (err) {
-              console.log(err);
               alert.innerHTML="Some error occurred"
               alert.style.transform="rotateY(0deg)"
               setTimeout(()=>{
@@ -1042,7 +1039,6 @@
                 fetch("https://api.ipify.org/?format=json")
                 .then(results=>results.json())
                 .then(data=>{
-                  console.log(data)
                   document.getElementById("item5-main").innerHTML=data.ip
                   })
             </script>

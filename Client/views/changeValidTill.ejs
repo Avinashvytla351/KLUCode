@@ -283,8 +283,8 @@
     </section>
     <br />
     <br />
-    <script src="/adminjs/classie.js"></script>
-    <script src="/adminjs/gnmenu.js"></script>
+    <script src="../../adminjs/classie.js"></script>
+    <script src="../../adminjs/gnmenu.js"></script>
     <script>
       new gnMenu(document.getElementById("gn-menu"));
       document.getElementById("token").value = "<%= token %>";
@@ -316,7 +316,6 @@
           },
           success: function (data) {
             document.getElementById("time").innerText = "The User participation Time is "+data.data[0].validTill;
-            console.log(data.data[0].validTill)
           },
         });
       }
