@@ -41,28 +41,27 @@ let userSessions2 = [];
 
 var defaultUserPic = "./images/defaultuser.png";
 
-// let sessionText = fs.readFileSync("./store.txt", "utf-8");
+let sessionText = fs.readFileSync("./store.txt", "utf-8");
 
-// if (sessionText !== "") {
-//     userSessions2 = sessionText.split("\n");
-//     for (let i = 0; i < userSessions2.length; i++) {
-//         userSessions.push({
-//             username: userSessions2[i].substring(0, 10),
-//             val: Number(userSessions2[i].substring(10, 11)),
-//         });
-//     }
-// }
+if (sessionText !== "") {
+    userSessions2 = sessionText.split("\n");
+    for (let i = 0; i < userSessions2.length; i++) {
+        userSessions.push({
+            username: userSessions2[i].substring(0, 10),
+            val: Number(userSessions2[i].substring(10, 11)),
+        });
+    }
+}
 
 let checkSignIn = async (req, res, next) => {
-    // if (
-    //     userSessions2.includes(req.cookies.user) ||
-    //     Object.keys(req.cookies).length === 0
-    // ) {
-    //     next(); //If session exists, proceed to page
-    // } else {
-    //     res.redirect("/logout"); //Error, trying to access unauthorized page!
-    // }
-    next();
+    if (
+        userSessions2.includes(req.cookies.user) ||
+        Object.keys(req.cookies).length === 0
+    ) {
+        next(); //If session exists, proceed to page
+    } else {
+        res.redirect("/logout"); //Error, trying to access unauthorized page!
+    }
 };
 
 var imageUrl = "";
@@ -322,9 +321,9 @@ app.get("/admin/edit/question", async (req, res) => {
     };
 
     request(options, function (err, response, body1) {
-        if(!body1.success) {
+        if (!body1.success) {
             let errorData = {
-                message : "Authorization Error"
+                message: "Authorization Error"
             };
             return res.render("error", errorData);
         }
@@ -363,21 +362,39 @@ app.post("/questionEdit", async (req, res) => {
             };
 
             request(options, function (err, response, body) {
-                if(body.length === 0)
-                {
-                    let errorData = {
-                        message : "Question does not exist with the given id "+questionId
+                if (body.success) {
+                    let options = {
+                        url: serverRoute + "/questions/" + questionId,
+                        method: "get",
+                        headers: {
+                            authorization: req.cookies.token,
+                        },
+                        json: true,
                     };
-                    return res.render("error",{
-                        data : errorData,
-                        imgUsername : req.cookies.username
-                    })
+
+                    request(options, function (err, response, body) {
+                        if (body.length === 0) {
+                            let errorData = {
+                                message: "Question does not exist with the given id " + questionId
+                            };
+                            return res.render("error", {
+                                data: errorData,
+                                imgUsername: req.cookies.username
+                            })
+                        }
+                        body[0].serverRoute = serverRoute;
+                        res.render("question/questionEdit", {
+                            data: body[0],
+                            token: req.cookies.token,
+                        });
+                    });
+                } else {
+                    body.message = "Unauthorized access";
+                    res.render("error", {
+                        data: body,
+                        imgUsername: req.cookies.username,
+                    });
                 }
-                body[0].serverRoute = serverRoute;
-                res.render("question/questionEdit", {
-                    data: body[0],
-                    token: req.cookies.token,
-                });
             });
         } else {
             body.message = "Unauthorized access";
@@ -386,7 +403,7 @@ app.post("/questionEdit", async (req, res) => {
     });
 });
 
-app.post("/questions/:questionId", async (req,res) => {
+app.post("/questions/:questionId", async (req, res) => {
     let questionId = req.params.questionId;
     let options = {
         url: serverRoute + "/isAdmin",
@@ -397,13 +414,13 @@ app.post("/questions/:questionId", async (req,res) => {
         json: true,
     };
     request(options, function (err, response, body) {
-        if(!body.success) {
+        if (!body.success) {
             let errorData = {
-                message : "Authorization Error"
+                message: "Authorization Error"
             };
-            return res.render("error",{
-                data : errorData,
-                imgUsername : req.cookies.username
+            return res.render("error", {
+                data: errorData,
+                imgUsername: req.cookies.username
             })
         }
         let options = {
@@ -415,21 +432,21 @@ app.post("/questions/:questionId", async (req,res) => {
             json: true,
         };
         request(options, function (err, response, body) {
-            if(!body.success) {
+            if (!body.success) {
                 let errorData = {
-                    message : "Question update caused some error with the given id "+questionId
+                    message: "Question update caused some error with the given id " + questionId
                 };
-                return res.render("error",{
-                    data : errorData,
-                    imgUsername : req.cookies.username
+                return res.render("error", {
+                    data: errorData,
+                    imgUsername: req.cookies.username
                 })
             }
             let errorData = {
-                message : "Question updated with id "+questionId
+                message: "Question updated with id " + questionId
             };
-            res.render("error",{
-                data : errorData,
-                imgUsername : req.cookies.username
+            res.render("error", {
+                data: errorData,
+                imgUsername: req.cookies.username
             })
         });
     });
@@ -642,14 +659,13 @@ app.post("/contestEdit", async (req, res) => {
     };
 
     request(options, function (err, response, body) {
-        if(body.length === 0)
-        {
+        if (body.length === 0) {
             let errorData = {
-                message : "Contest does not exist with the given id "+contestId
+                message: "Contest does not exist with the given id " + contestId
             };
-            return res.render("error",{
-                data : errorData,
-                imgUsername : req.cookies.username
+            return res.render("error", {
+                data: errorData,
+                imgUsername: req.cookies.username
             })
         }
         body[0].serverurl = serverRoute;
