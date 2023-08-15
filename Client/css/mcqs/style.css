@@ -13,6 +13,7 @@
 }
 
 body {
+  position: relative;
   background: #f9fbfe;
 }
 
