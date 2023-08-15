@@ -726,7 +726,6 @@ app.get("/contests/:contestId", checkSignIn, async (req, res, next) => {
             json: true,
           };
           // get participation details
-          console.log(body);
           request(options3, function (err, response, bodytimer) {
             bodytimer = bodytimer[0];
             let questions = [];
