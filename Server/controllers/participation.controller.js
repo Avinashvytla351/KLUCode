@@ -272,6 +272,21 @@ exports.changeValidTime = (req, res) => {
     });
 };
 
+exports.findUserPartTime = (req, res) => {
+  Participation.find({ participationId: req.params.participationId })
+    .then((participation) => {
+      res.send({
+        success: true,
+        data: participation,
+      });
+    })
+    .catch((err) => {
+      res.send({
+        success: false,
+      });
+    });
+};
+
 // Retrieve and return all participation details.
 exports.findContestPart = (req, res) => {
   Participation.find({ contestId: req.body.contestId })

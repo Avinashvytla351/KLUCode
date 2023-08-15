@@ -33,4 +33,17 @@ module.exports = (app) => {
     //To end a contest
     app.post("/endContest", middleware.checkToken, participation.endContest);
 
+    //Extend Time
+    app.post(
+        "/changeValidTime",
+        middleware.checkTokenAdmin,
+        participation.changeValidTime
+    );
+
+    app.get(
+        "/getPartTime/:participationId",
+        middleware.checkToken,
+        participation.findUserPartTime
+    );
+
 }

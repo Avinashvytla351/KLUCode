@@ -16,7 +16,7 @@
   </head>
   <body>
       <div class="container">
-        <%- include('../partials/adminpanel') %>
+        <%- include('./partials/adminpanel.ejs') %>
           <header>
             <h1><%= data.title ? data.title : "Results" %><span style="color: black;"><%= data.subtitle ? data.subtitle : "Contests" %></span></h1>	
 		  </header> 
@@ -51,6 +51,6 @@
 		<script>
 			new gnMenu( document.getElementById( 'gn-menu' ) );
 		</script>
-    <%- include('../partials/footer') %>
+    <%- include('./partials/footer') %>
   </body>
 </html>

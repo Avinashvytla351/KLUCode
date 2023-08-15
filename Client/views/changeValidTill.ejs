@@ -163,7 +163,7 @@
   </head>
 
   <body>
-    <%- include('../partials/adminpanel') -%>
+    <%- include('./partials/adminpanel.ejs') -%>
     <br /><br /><br /><br /><br />
     <section class="page-title bg-white position-relative" style="height: 8vh">
       <div class="container">
@@ -268,13 +268,6 @@
           id="contestId"
           required
         />
-        <input
-          class="sinput"
-          type="text"
-          placeholder="If Mcq Contest enter 'YES' else enter 'NO'""
-          id="mcq"
-          required
-        />
         <button class="sbutton" onclick="getSubmission()">
           Get Time
         </button>
@@ -306,9 +299,8 @@
       function getSubmission() {
         let contestId = document.getElementById("contestId").value;
         let username = document.getElementById("username").value;
-        let mcq = document.getElementById("mcq").value;
         $.ajax({
-          url: "<%=data.serverurl%>/getPartTime/"+username+contestId+"/"+mcq,
+          url: "<%=data.serverurl%>/getPartTime/"+username+contestId,
           type: "GET",
           async: true,
           headers: {
