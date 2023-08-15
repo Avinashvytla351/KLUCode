@@ -1,8 +1,11 @@
 const Question = require("../models/question.model.js");
+const Contest = require("../models/contest.model.js");
+const Participation = require("../models/participation.model.js");
 const inarray = require("inarray");
 const xlsx = require("xlsx");
 const contests = require("./contest.controller.js");
 const participations = require("./participation.controller.js");
+const setController = require("./set.controller.js");
 // const Base64 = require('js-base64').Base64;
 // Create and Save a new question
 exports.create = (req, res) => {
@@ -91,7 +94,7 @@ exports.createExcel = (req, res) => {
     var uploadpath = "../quesxlsx" + name;
     file.mv(uploadpath, function (err) {
       if (err) {
-        res.send("Error Occured!");
+        res.send("Error occurred!");
       } else {
         let wb = xlsx.readFile("../quesxlsx" + name);
         let ws = wb.Sheets["Sheet1"];
@@ -125,8 +128,6 @@ exports.createExcel = (req, res) => {
                 editorial: data[i].editorial,
                 difficulty: data[i].level,
               });
-
-              // Save Question in the database
               question.save();
             }
             res.send({
@@ -161,14 +162,14 @@ exports.createSet = (req, res) => {
     var uploadpath = "../quesxlsx" + name;
     file.mv(uploadpath, function (err) {
       if (err) {
-        res.send("Error Occured!");
+        res.send("Error occurred!");
       } else {
         let wb = xlsx.readFile("../quesxlsx" + name);
         let ws = wb.Sheets["Sheet1"];
         let data = xlsx.utils.sheet_to_json(ws);
         let question;
         Question.find()
-          .then((questions) => {
+          .then(async (questions) => {
             let currQuestions = questions.length;
             for (let i = 0; i < data.length; i++) {
               question = new Question({
@@ -199,11 +200,8 @@ exports.createSet = (req, res) => {
               // Save Question in the database
               question.save();
             }
-
-            contests.findOneSet(req, (err, contest) => {
-              if (err) {
-                res.send({ success: false, message: "Error occured" });
-              }
+            try {
+              let contest = await Contest.findOne({ contestId: req.params.contestId });
               let sets = contest.sets;
               let initialLength = questions.length;
               let finalLength = initialLength + data.length;
@@ -216,17 +214,19 @@ exports.createSet = (req, res) => {
               if (contest.sets) {
                 sets.push(set);
               }
-              contests.updateOneSet(req, sets, (err, contest1) => {
-                if (err) {
-                  res.send({ success: false, message: "Error occured" });
-                }
-              });
-            });
-
-            res.send({
-              success: true,
-              message: "Done! Uploaded files",
-            });
+              try { 
+                let modifiedSets = contests.updateOneSet(req,sets);
+                res.send({
+                  success: true,
+                  message: "Successfully added the following sets to Contest with id "+req.params.contestId,
+                  sets : modifiedSets
+                });
+              } catch(err) {
+                res.send({ success: false, message: "Error occurred while modifying sets through excel of Contest with id "+req.params.contestId });
+              }
+            } catch(err) {
+              res.send({ success: false, message: "Error occurred while creating a" });
+            }
           })
           .catch((err) => {
             res.status(500).send({
@@ -247,71 +247,43 @@ exports.createSet = (req, res) => {
   }
 };
 
-exports.addSetGivenQIdArray = (req, res) => {
+exports.addSetGivenQIdArray = async(req, res) => {
   let questionIdString = req.body.questionIdsString;
-
   let pattern = /[^A-Z&a-z&0-9]/;
-  let questionIds = questionIdString
-    .split(",")
-    .map((entry) => entry.trim())
-    .filter((entry) => entry.match(pattern) === null);
-
-  Question.find({ questionId: { $in: questionIds } })
-    .then((question) => {
-      if (question.length === 0) {
-        return res.status(400).send({
-          success: false,
-          message: "Question id does not exists!",
-        });
-      }
-      Question.updateMany(
+  let questionIds = questionIdString.split(",").map((entry) => entry.trim()).filter((entry) => entry.match(pattern) === null);
+  console.log(questionIds);
+  try {
+    let questions = await Question.find({ questionId: { $in: questionIds } });
+    if (questions.length === 0) {
+      return res.status(400).send({
+        success: false,
+        message: "None of the given Question ids exists!",
+      });
+    }
+    try {
+      let updatedQuestions = await Question.updateMany(
         { questionId: { $in: questionIds } },
         {
           $set: {
             contestId: req.body.contestId,
           },
-        }
-      )
-        .then((questions) => {
-          let set = question.map((e) => e.questionId);
-          updateSet(set);
-        })
-        .catch((err) => {
-          res.status(500).send({
-            success: false,
-            message:
-              err.message || "Some error occurred while retrieving questions.",
-          });
         });
-    })
-    .catch((err) => {
+      let set = questions.map((e) => e.questionId);
+      setController.updateSet(set);
+    } catch (err) {
       res.status(500).send({
         success: false,
         message:
-          err.message || "Some error occurred while retrieving questions.",
+          "Some error occurred while updating questions(sets) with given message "+err.message,
       });
+    }
+  } catch (err) {
+    res.status(500).send({
+      success: false,
+      message: "Error occurred while finding questions from the given ids with message "+err.message,
     });
+  }
 
-  const updateSet = (set) => {
-    contests.findOneSet(req, (err, contest) => {
-      if (err) {
-        res.send({ success: false, message: "Error occured" });
-      }
-      let sets = contest.sets || [];
-      if (contest.sets) {
-        sets.push(set);
-      }
-      contests.updateOneSet(req, sets, (err, contest1) => {
-        if (err) {
-          res.send({ success: false, message: "Error occured" });
-        }
-        res.send({
-          success: true,
-          message: "Done! Added to Set",
-        });
-      });
-    });
-  };
 };
 
 exports.getAllQuestions = async (req) => {
@@ -435,25 +407,7 @@ exports.update = (req, res) => {
   if (!req.body.questionId) {
     return res.status(400).send({
       success: false,
-      message: "content can not be empty",
-    });
-  }
-
-  let username = req.decoded.username;
-  let qid = req.body.questionId;
-  let userArr = ["admin"];
-  qid = qid.slice(0, 3);
-  userSlice = username.slice(7);
-  userSlice = userSlice.toUpperCase();
-  if (req.decoded.admin) {
-    qid = "admin";
-    username = "admin";
-    userSlice = "admin";
-  }
-  if (!userArr.includes(username) || qid != userSlice) {
-    return res.status(400).send({
-      success: false,
-      message: "Unauthorized access!",
+      message: "QuestionId can not be empty",
     });
   }
   // Find question and update it with the request body
@@ -494,7 +448,11 @@ exports.update = (req, res) => {
           message: "Question not found with id " + req.params.questionId,
         });
       }
-      res.send("Updated Successfully, Go Back");
+      res.status(200).send({
+          success: true,
+          questionId : req.params.questionId,
+          message: "Updated Successfully",
+      });
     })
     .catch((err) => {
       if (err.kind === "ObjectId") {
@@ -567,79 +525,29 @@ exports.deleteMultiple = (req, res) => {
 };
 
 exports.findAllContest = async (req, res) => {
-  //Main Code Starts From Try, this function is called below
-  const findSet = async (questionIdArray) => {
-    return Question.find({ questionId: { $in: questionIdArray } })
-      .then(async (question) => {
-        if (!question) {
-          return res.status(404).send({
-            success: false,
-            message: "Question not found with id " + req.params.contestId,
-          });
-        }
-        res.send(question);
-      })
-      .catch((err) => {
-        if (err.kind === "ObjectId") {
-          return res.status(404).send({
-            success: false,
-            message: "Question not found with id " + req.params.contestId,
-          });
-        }
-        return res.status(500).send({
-          success: false,
-          message: "Error retrieving question with id " + req.params.contestId,
-        });
-      });
-  };
-
-  //Main Code Starts From Try, this function is called below
-  const findContest = async () => {
-    Question.find({ contestId: req.params.contestId })
-      .then((question) => {
-        if (!question) {
-          return res.status(404).send({
-            success: false,
-            message: "Question not found with id " + req.params.contestId,
-          });
-        }
-        res.send(question);
-      })
-      .catch((err) => {
-        if (err.kind === "ObjectId") {
-          return res.status(404).send({
-            success: false,
-            message: "Question not found with id " + req.params.contestId,
-          });
-        }
-        return res.status(500).send({
-          success: false,
-          message: "Error retrieving question with id " + req.params.contestId,
-        });
-      });
-  };
-
   try {
-    const contest = await contests.findOneSet(req);
-    if (contest.multiset === true) {
-      participations.findParticipation(req, async (err, participation) => {
-        if (err) {
-          return res.send({ success: false, message: err || "Error occured" });
-        }
-
+    const contest = await Contest.findOne({ contestId: req.params.contestId });
+    console.log(contest);
+    if (contest.multiSet === true) {
+      try {
+        const participation = await Participation.findOne({ participationId: req.decoded.username + req.params.contestId });
         if (participation.questions.length !== 0) {
-          const result = await findSet(participation.questions);
-          return result;
+          try{
+            let result = await Question.find({ questionId: { $in: participation.questions } });
+            return result;
+          } catch (err) {
+            return res.status(404).send({
+              success: false,
+              message: "Question not found with id " + req.params.contestId,
+            });
+          }
         }
-
         let sets = contest.sets;
         let questionIds = [];
-        let index, i;
-        for (i = 0; i < contest.sets.length; i++) {
+        for (let i = 0; i < contest.sets.length; i++) {
           let index = Math.floor(Math.random() * sets[i].length);
           questionIds[i] = sets[i][index];
         }
-
         participations.updateParticipation(
           req,
           questionIds,
@@ -647,21 +555,32 @@ exports.findAllContest = async (req, res) => {
             if (err) {
               return res.send({
                 success: false,
-                message: err || "Error occured",
+                message: err || "Error occurred",
               });
             }
-            let result = await findSet(questionIds);
-            return result;
+            try{
+              let result = await Question.find({ questionId: { $in: questionIds } });
+              return result;
+            } catch (err) {
+              return res.status(404).send({
+                success: false,
+                message: "Question not found with id " + req.params.contestId,
+              });
+            }
           }
         );
-      });
+      } catch(err) {
+          return res.send({ success: false, message: err || "Error occurred while retrieving participation of user "+req.decoded.username+" and contestId "+req.params.contestId });
+      }
     } else {
-      findContest();
+      try {
+        const result = await Question.find({ contestId: req.params.contestId });
+        return result;
+      } catch(err) {
+          res.send({ success: false, message: "Error retrieving questions from contest with id "+req.params.contestId });
+      }
     }
-  } catch (error) {
-    return res.send({
-      success: false,
-      message: error.message || "Error occurred",
-    });
+  } catch(err) {
+      res.send({ success: false, message: "Error occurred while retrieving contest with contestId " });
   }
 };

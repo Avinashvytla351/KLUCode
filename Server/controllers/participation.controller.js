@@ -146,14 +146,14 @@ exports.acceptSubmission = async (sub) => {
       participationId: sub.participationId,
     });
 
-    let multiset = true;
+    let multiSet = true;
     if (participation.questions.length !== 0) {
       if (!participation.questions.includes(sub.questionId)) {
-        multiset = false;
+        multiSet = false;
         return participation;
       }
     }
-    if (multiset) {
+    if (multiSet) {
       let found = false;
       let updated = false;
 

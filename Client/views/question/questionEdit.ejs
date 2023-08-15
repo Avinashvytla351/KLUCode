@@ -21,7 +21,7 @@
 				<h1>Manage Questions<span style="color:black">Edit Questions</span></h1>	
 			</header> 
 			<div class="main-block">
-			<form action="<%= data.serverUrl %>/questions/<%= data.questionId %>" method = "POST">
+			<form action="<%= data.serverRoute %>/questions/<%= data.questionId %>" method = "POST">
 				
 				<h1>Add Question Manually</h1>
 				<span class="allInputs">
@@ -140,7 +140,6 @@
 				</span>
 				<hr>
 				<textarea type="hidden" name="token" id="token" value="<%= token %>" style="display: none;"><%= token %></textarea>
-
 				<button class= "submit" type="submit" href="/">Send</button>
 			</form>
     	</div>

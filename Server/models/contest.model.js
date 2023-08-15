@@ -10,7 +10,7 @@ var contestSchema = new Schema({
     contestDuration: String,
     contestStartTime: String,
     contestEndTime: String,
-    multiset: { type: Boolean, default: false },
+    multiSet: { type: Boolean, default: false },
     sets: Array,
     usernames: [String],
     contestPassword: String,

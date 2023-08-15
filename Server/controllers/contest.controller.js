@@ -1,4 +1,5 @@
 const Contest = require("../models/contest.model.js");
+const contests = require("../controllers/contest.controller.js");
 const inarray = require("inarray");
 const xlsx = require("xlsx");
 
@@ -181,7 +182,7 @@ exports.getDuration = async (req) => {
   }
 };
 
-// Find a single contest with a contestId for checking multiset
+// Find a single contest with a contestId for checking multiSet
 exports.findOneSet = async (req) => {
   try {
     var contest = await Contest.findOne({ contestId: req.params.contestId });
@@ -198,30 +199,27 @@ exports.findOneSet = async (req) => {
 };
 
 // Update a single contest with a contestId
-exports.updateOneSet = (req, sets, callback) => {
-  Contest.findOneAndUpdate(
-    { contestId: req.params.contestId },
-    {
-      $set: {
-        multiset: true,
-        sets: sets,
-      },
-    },
-    { new: true }
-  )
-    .then((contest) => {
-      if (!contest) {
-        return callback("Contest not found ", null);
-      }
-      contest = contest[0];
-      return callback(null, contest);
-    })
-    .catch((err) => {
-      if (err.kind === "ObjectId") {
-        return callback("Contest not found", null);
-      }
-      return callback("Error retrieving contest", null);
-    });
+exports.updateOneSet = async (req, sets) => {
+  try {
+    const contest = await Contest.findOne({ contestId: req.params.contestId });
+
+    if (!contest) {
+      throw new Error("Contest not found");
+    }
+
+    contest.multiSet = true;
+    contest.sets = sets;
+
+    const updatedContest = await contest.save();
+    console.log(updatedContest,"lol1");
+    return updatedContest.sets;
+  } catch (err) {
+    if (err.kind === "ObjectId") {
+      throw new Error("Contest not found");
+    } else {
+      throw new Error("Error retrieving contest");
+    }
+  }
 };
 
 // Update a contest identified by the contestId in the request

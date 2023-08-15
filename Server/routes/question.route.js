@@ -51,7 +51,7 @@ module.exports = (app) => {
     );
 
     // Update a question with questionId
-    app.post("/questions/:questionId", middleware.checkToken, questions.update);
+    app.post("/questions/:questionId", middleware.checkTokenAdmin, questions.update);
 
     // Delete a question with questionId
     app.delete(

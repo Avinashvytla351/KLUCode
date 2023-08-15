@@ -2,6 +2,7 @@ let middleware = require("../util/middleware.js");
 
 module.exports = (app) => {
     const contests = require("../controllers/contest.controller.js");
+    const sets = require("../controllers/set.controller.js");
 
     // Create a new contest
     app.post("/contests", middleware.checkTokenAdmin, contests.create);
@@ -25,5 +26,9 @@ module.exports = (app) => {
         contests.delete
     );
 
-    app.post("/checkContestPassword", middleware.checkToken, contests.checkContestPassword)
+    //check pass
+    app.post("/checkContestPassword", middleware.checkToken, contests.checkContestPassword);
+
+    //delete a set
+    app.get("/deleteSet/:contestId/:setId",middleware.checkTokenAdmin,sets.deleteSet)
 };
