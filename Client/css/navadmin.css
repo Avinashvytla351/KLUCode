@@ -52,7 +52,7 @@ form {
   padding: 20px;
   box-shadow: 0 1px 2px 0 rgba(60, 64, 67, 0.3),
     0 2px 6px 2px rgba(60, 64, 67, 0.15);
-  background: #fff;
+  background: rgb(255, 255, 255);
   border-radius: 4mm;
 }
 input {
@@ -249,7 +249,7 @@ table {
 .dropdown__button {
   padding: 10px 20px;
   background-color: #323b40;
-  color: #ffffff;
+  color: rgb(255, 255, 255) fff;
   border: none;
   cursor: pointer;
 }
@@ -264,7 +264,7 @@ table {
   overflow: hidden;
   width: 100%;
   height: 0;
-  background-color: #ffffff;
+  background-color: rgb(255, 255, 255) fff;
   color: blue;
   box-shadow: 0 3px 2px rgba(0, 0, 0, 0.3);
   transition: all 0.5s ease-in-out;
@@ -307,7 +307,7 @@ body {
 
 .container > header,
 .codrops-top {
-  color: #fff;
+  color: rgb(255, 255, 255);
   font-family: "Lato", Arial, sans-serif;
 }
 
@@ -349,7 +349,7 @@ body {
 
 /* To Navigation Style */
 .codrops-top {
-  background: #fff;
+  background: rgb(255, 255, 255);
   background: rgba(255, 255, 255, 0.6);
   text-transform: uppercase;
   width: 100%;
@@ -803,7 +803,7 @@ body {
 
 .container > header,
 .codrops-top {
-  color: #fff;
+  color: rgb(255, 255, 255);
   font-family: "Lato", Arial, sans-serif;
 }
 
@@ -846,7 +846,7 @@ body {
 
 /* To Navigation Style */
 .codrops-top {
-  background: #fff;
+  background: rgb(255, 255, 255);
   background: rgba(255, 255, 255, 0.6);
   text-transform: uppercase;
   width: 100%;

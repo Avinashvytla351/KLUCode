@@ -16,7 +16,7 @@ body {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #fff;
+  background-color: rgb(255, 255, 255);
   z-index: 999;
   display: flex;
   align-items: center;
@@ -44,15 +44,15 @@ a,
 button,
 select {
   cursor: pointer;
-  transition: .2s ease;
+  transition: 0.2s ease;
 
   &:focus {
     outline: 0;
   }
 }
 
-a.text-dark{
-  &:hover{
+a.text-dark {
+  &:hover {
     color: $primary-color !important;
   }
 }
@@ -88,13 +88,13 @@ a:hover {
 
   &::before {
     position: absolute;
-    content: '';
+    content: "";
     height: 100%;
     width: 100%;
     top: 0;
     left: 0;
     background: $black;
-    opacity: .5;
+    opacity: 0.5;
   }
 }
 
@@ -110,7 +110,7 @@ a:hover {
   background: $primary-color !important;
 }
 
-.bg-gray{
+.bg-gray {
   background: $gray !important;
 }
 
@@ -174,7 +174,7 @@ a:hover {
   z-index: 1;
 }
 
-.rounded-lg{
+.rounded-lg {
   border-radius: 15px;
 }
 
@@ -194,7 +194,7 @@ a:hover {
   box-shadow: 0px 18px 39.1px 6.9px rgba(224, 241, 255, 0.34) !important;
 }
 
-.bg-dark{
+.bg-dark {
   background-color: #222222 !important;
 }
 
@@ -217,26 +217,26 @@ a:hover {
 /* /icon */
 
 /* slick slider */
-.slick-dots{
+.slick-dots {
   text-align: center;
   padding-left: 0;
-  li{
+  li {
     display: inline-block;
     margin: 2px;
-    &.slick-active{
-      button{
+    &.slick-active {
+      button {
         background: $white;
         width: 25px;
       }
     }
-    button{
+    button {
       height: 6px;
       width: 12px;
-      background: rgba($color: $white, $alpha: .5);
+      background: rgba($color: $white, $alpha: 0.5);
       color: transparent;
       border-radius: 10px;
       overflow: hidden;
-      transition: .2s ease;
+      transition: 0.2s ease;
       border: 0;
     }
   }
@@ -244,30 +244,30 @@ a:hover {
 /* /slick slider */
 
 /* form */
-.form-control{
+.form-control {
   border: 0;
   border-radius: 0;
   border-bottom: 1px solid $border-color;
   height: 60px;
-  &:focus{
+  &:focus {
     border-color: $primary-color;
     outline: 0;
     box-shadow: none !important;
   }
 }
 
-textarea.form-control{
+textarea.form-control {
   height: 120px;
 }
 /* /form */
 
 /* card */
-.card{
+.card {
   border: 0;
-  &-header{
+  &-header {
     border: 0;
   }
-  &-footer{
+  &-footer {
     border: 0;
   }
 }

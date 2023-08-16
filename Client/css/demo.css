@@ -38,10 +38,12 @@ a:focus {
   color: #f22840;
   text-decoration: none;
 }
-p { margin: 0 0 20px; }
+p {
+  margin: 0 0 20px;
+}
 
 h1,
-h2,{
+h2 {
   margin: 10px 0;
   font-weight: 500;
   line-height: 40px;
@@ -54,8 +56,12 @@ h2 small {
   line-height: 1;
   color: #8d8d8d;
 }
-h1 { font-size: 28px; }
-h2 { font-size: 22px; }
+h1 {
+  font-size: 28px;
+}
+h2 {
+  font-size: 22px;
+}
 
 /* @end */
 
@@ -87,14 +93,19 @@ h2 { font-size: 22px; }
 }
 
 @media (max-width: 800px) {
-  body { padding: 0; }
+  body {
+    padding: 0;
+  }
 
   .main-header {
     position: relative;
     width: 100%;
   }
 
-  .main-header__nav a { display: inline-block; border: none; }
+  .main-header__nav a {
+    display: inline-block;
+    border: none;
+  }
 }
 
 .intro {
@@ -134,7 +145,7 @@ h2 { font-size: 22px; }
   background-color: #da0d25;
   background-position: center center;
   background-repeat: no-repeat;
-  color: #FFF;
+  color: rgb(255, 255, 255);
   text-shadow: none;
   vertical-align: middle;
   cursor: pointer;

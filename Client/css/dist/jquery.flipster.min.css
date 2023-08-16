@@ -143,7 +143,7 @@
   border: 1mm solid rgb(26, 115, 232);
 }
 .flipster__nav__child .flipster__nav__link::after {
-  background: #fff;
+  background: rgb(255, 255, 255);
 }
 .flipster__nav__child .flipster__nav__item--current > .flipster__nav__link,
 .flipster__nav__child .flipster__nav__link:hover,

@@ -59,7 +59,7 @@ body {
 }
 /*---------------- LEVEL 4 HEADER--------------*/
 #home button {
-  background-color: #fff;
+  background-color: rgb(255, 255, 255);
   font-family: "Barlow", sans-serif;
   font-weight: bold;
   font-size: 14px;
@@ -136,7 +136,7 @@ table {
 }
 
 .row:nth-child(odd) {
-  background-color: #ffffff;
+  background-color: rgb(255, 255, 255) fff;
 }
 
 img {

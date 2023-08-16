@@ -99,7 +99,7 @@ body {
 }
 
 #status-line {
-  color: #fff;
+  color: rgb(255, 255, 255);
   float: right;
   right: 0;
   text-align: right;

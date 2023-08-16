@@ -128,49 +128,49 @@ h6,
 }
 
 .btn-primary {
-  background: #41228e;
-  color: #fff;
+  background: rgb(198, 247, 136);
+  color: rgb(255, 255, 255);
 }
 
 .btn-primary:active {
-  background: #542cb7 !important;
+  background: rgb(198, 247, 136) !important;
 }
 
 .btn-primary:hover {
-  background: #542cb7;
+  background: rgb(198, 247, 136);
 }
 
 .btn-primary.focus,
 .btn-primary.active {
-  background: #542cb7 !important;
+  background: rgb(198, 247, 136) !important;
   box-shadow: none !important;
 }
 
 .btn-transparent {
   background: transparent;
-  color: #41228e;
+  color: rgb(198, 247, 136);
   font-weight: bold;
 }
 
 .btn-transparent:active,
 .btn-transparent:hover {
-  color: #41228e;
+  color: rgb(198, 247, 136);
 }
 
 body {
   position: relative;
-  background-color: #fff;
+  background-color: rgb(255, 255, 255);
   overflow-x: hidden;
 }
 
 ::-moz-selection {
-  background: #542cb7;
-  color: #fff;
+  background: rgb(198, 247, 136);
+  color: rgb(255, 255, 255);
 }
 
 ::selection {
-  background: #542cb7;
-  color: #fff;
+  background: rgb(198, 247, 136);
+  color: rgb(255, 255, 255);
 }
 
 /* preloader */
@@ -180,7 +180,7 @@ body {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #fff;
+  background-color: rgb(255, 255, 255);
   z-index: 999;
   display: flex;
   align-items: center;
@@ -218,11 +218,11 @@ select:focus {
 }
 
 a.text-dark:hover {
-  color: #41228e !important;
+  color: rgb(198, 247, 136) !important;
 }
 
 a:hover {
-  color: #41228e;
+  color: rgb(198, 247, 136);
 }
 
 .slick-slide {
@@ -270,7 +270,7 @@ a:hover {
 }
 
 .bg-primary {
-  background: #41228e !important;
+  background: rgb(198, 247, 136) !important;
 }
 
 .bg-gray {
@@ -278,7 +278,7 @@ a:hover {
 }
 
 .text-primary {
-  color: #41228e !important;
+  color: rgb(198, 247, 136) !important;
 }
 
 .text-color {
@@ -390,7 +390,7 @@ a:hover {
 }
 
 .slick-dots li.slick-active button {
-  background: #fff;
+  background: rgb(255, 255, 255);
   width: 25px;
 }
 
@@ -415,7 +415,7 @@ a:hover {
 }
 
 .form-control:focus {
-  border-color: #41228e;
+  border-color: rgb(198, 247, 136);
   outline: 0;
   box-shadow: none !important;
 }
@@ -445,7 +445,7 @@ textarea.form-control {
 }
 
 .navigation.nav-bg {
-  background-color: #41228e;
+  background-color: rgb(198, 247, 136);
   padding: 15px 100px;
 }
 
@@ -458,7 +458,7 @@ textarea.form-control {
 @media (max-width: 991px) {
   .navigation {
     padding: 20px;
-    background: #41228e;
+    background: rgb(198, 247, 136);
   }
 }
 
@@ -473,7 +473,7 @@ textarea.form-control {
 }
 
 .navbar-dark .navbar-nav .nav-link {
-  color: #fff;
+  color: rgb(255, 255, 255);
 }
 
 .hero-area {
@@ -626,20 +626,20 @@ textarea.form-control {
 }
 
 .hover-bg-primary:hover {
-  background: #41228e;
+  background: rgb(198, 247, 136);
 }
 
 .hover-bg-primary:hover * {
-  color: #fff;
+  color: rgb(255, 255, 255);
 }
 
 .active-bg-primary {
   transition: 0.3s ease;
-  background: #41228e;
+  background: rgb(198, 247, 136);
 }
 
 .active-bg-primary * {
-  color: #fff;
+  color: rgb(255, 255, 255);
 }
 
 .hover-shadow {
@@ -786,7 +786,7 @@ blockquote {
   display: inline-block;
   padding: 10px 10px;
   background: #eaeaea;
-  border-left: 2px solid #41228e;
+  border-left: 2px solid rgb(198, 247, 136);
   font-style: italic;
   font-family: Verdana;
   font-size: 18px;
