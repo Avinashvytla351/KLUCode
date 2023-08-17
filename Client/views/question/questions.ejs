@@ -590,6 +590,8 @@
             // Output the result in an element with id="demo"
             document.getElementById("demo").innerHTML =
               hours + ":" + minutes + ":" + seconds;
+              document.getElementById("demo1").innerHTML =
+              hours + ":" + minutes + ":" + seconds;
             
             // If the count down is over, write some text
             if (distance < 0) {
@@ -598,6 +600,7 @@
               document.getElementById("descit").style.display="none"
               document.querySelector(".finished").style.display="block"
               document.getElementById("demo").innerHTML = "Expired";
+              document.getElementById("demo1").innerHTML = "Expired";
               counter=0
             }
           }, 1000);

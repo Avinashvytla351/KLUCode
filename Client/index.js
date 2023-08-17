@@ -1104,7 +1104,6 @@ app.get(
         let url = {
           url: clientRoute,
         };
-        console.log(bodyparticipation[0].submissionResults);
         res.render("results_public2", {
           data: url,
           datap: bodyparticipation,
