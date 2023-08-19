@@ -199,10 +199,8 @@ exports.findOneSet = async (req) => {
 };
 
 // Update a single contest with a contestId
-exports.updateOneSet = async (req, sets) => {
+exports.updateOneSet = async (contest, sets) => {
   try {
-    const contest = await Contest.findOne({ contestId: req.params.contestId });
-
     if (!contest) {
       throw new Error("Contest not found");
     }
@@ -211,7 +209,6 @@ exports.updateOneSet = async (req, sets) => {
     contest.sets = sets;
 
     const updatedContest = await contest.save();
-    console.log(updatedContest,"lol1");
     return updatedContest.sets;
   } catch (err) {
     if (err.kind === "ObjectId") {

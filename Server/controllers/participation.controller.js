@@ -91,7 +91,7 @@ exports.findAll = (req, res) => {
 // Retrieve and return all participation details for user in contest.
 exports.findUser = (req, res) => {
   Participation.find({
-    participationId: req.decoded.username + req.params.contestId,
+    participationId: req.params.username + req.params.contestId,
   })
     .then((participation) => {
       res.send(participation);
@@ -121,6 +121,23 @@ exports.findAllContestsUser = (req, res) => {
     });
 };
 
+exports.findParticipation = (req, callback) => {
+  Participation.find({
+    participationId: req.decoded.username + req.params.contestId,
+  })
+    .then((participation) => {
+      if (participation.length === 0) {
+        return callback("participation not found ", null);
+      }
+
+      participation = participation[0];
+      return callback(null, participation);
+    })
+    .catch((err) => {
+      return callback(err || "Error retrieving contest", null);
+    });
+};
+
 exports.findUserTime = async (result) => {
   try {
     var participation = await Participation.find({
@@ -138,6 +155,32 @@ exports.findUserTime = async (result) => {
     }
     throw new Error("Error retrieving data");
   }
+};
+
+exports.updateParticipation = (req, questionIds, callback) => {
+  Participation.findOneAndUpdate(
+    { participationId: req.decoded.username + req.params.contestId },
+    {
+      $set: {
+        questions: questionIds,
+      },
+    },
+    { new: true }
+  )
+    .then((participation) => {
+      console.log(participation);
+      if (!participation) {
+        return callback("Contest not found ", null);
+      }
+      participation = participation[0];
+      return callback(null, participation);
+    })
+    .catch((err) => {
+      if (err.kind === "ObjectId") {
+        return callback("Contest not found", null);
+      }
+      return callback("Error retrieving contest", null);
+    });
 };
 
 exports.acceptSubmission = async (sub) => {

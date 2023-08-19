@@ -11,7 +11,7 @@ module.exports = (app) => {
 
     // Retrieve all participations for users in a contest
     app.get(
-        "/participations/:contestId",
+        "/participations/:contestId/:username",
         middleware.checkToken,
         participation.findUser
     );

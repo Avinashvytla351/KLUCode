@@ -266,13 +266,12 @@ exports.addSetGivenQIdArray = async (req, res) => {
     .split(",")
     .map((entry) => entry.trim())
     .filter((entry) => entry.match(pattern) === null);
-  console.log(questionIds);
   try {
     let questions = await Question.find({ questionId: { $in: questionIds } });
-    if (questions.length === 0) {
+    if (questions.length === 0 || questions.length !== questionIds.length) {
       return res.status(400).send({
         success: false,
-        message: "None of the given Question ids exists!",
+        message: "Some or All the questionId's do not exist!",
       });
     }
     try {
@@ -285,7 +284,30 @@ exports.addSetGivenQIdArray = async (req, res) => {
         }
       );
       let set = questions.map((e) => e.questionId);
-      setController.updateSet(set);
+      try {
+        let modifiedSets = await setController.updateSet(req,set);
+        console.log(modifiedSets)
+        if(modifiedSets == null)
+        {
+          return res.status(500).send({
+            success: false,
+            message:
+              "Sets could not be modified",
+          });
+        }
+        return res.status(200).send({
+          success : true,
+          message : "The modified sets are ",
+          data : modifiedSets
+        })
+      } catch(err) {
+        res.status(500).send({
+          success: false,
+          message:
+            "Some error occurred while updating questions(sets) with given message " +
+        err.message,
+        });
+      }
     } catch (err) {
       res.status(500).send({
         success: false,
@@ -543,85 +565,91 @@ exports.deleteMultiple = (req, res) => {
 };
 
 exports.findAllContest = async (req, res) => {
-  try {
-    const contest = await Contest.findOne({ contestId: req.params.contestId });
+
+    const contest = await Contest.findOne({contestId : req.params.contestId});
     if (contest.multiSet === true) {
-      try {
-        const participation = await Participation.findOne({
-          participationId: req.decoded.username + req.params.contestId,
-        });
-        if (participation.questions.length !== 0) {
-          try {
-            let result = await Question.find({
-              questionId: { $in: participation.questions },
-            });
-            return result;
-          } catch (err) {
-            return res.status(404).send({
-              success: false,
-              message: "Question not found with id " + req.params.contestId,
-            });
-          }
+      participations.findParticipation(req, async (err, participation) => {
+        if (err) {
+          return res.send({ success: false, message: err || "Error occured" });
         }
+
+        if (participation.questions.length !== 0) {
+          const result = await findSet(participation.questions);
+          return result;
+        }
+
         let sets = contest.sets;
         let questionIds = [];
-        for (let i = 0; i < contest.sets.length; i++) {
+        let index, i;
+        for (i = 0; i < contest.sets.length; i++) {
           let index = Math.floor(Math.random() * sets[i].length);
           questionIds[i] = sets[i][index];
         }
+
         participations.updateParticipation(
           req,
           questionIds,
           async (err, participation) => {
             if (err) {
-              return res.send({
-                success: false,
-                message: err || "Error occurred",
-              });
+              return res.send({ success: false, message: err || "Error occured" });
             }
-            try {
-              let result = await Question.find({
-                questionId: { $in: questionIds },
-              });
-              return result;
-            } catch (err) {
-              return res.status(404).send({
-                success: false,
-                message: "Question not found with id " + req.params.contestId,
-              });
-            }
+            let result = await findSet(questionIds);
+            return result;
           }
         );
-      } catch (err) {
-        return res.send({
-          success: false,
-          message:
-            err ||
-            "Error occurred while retrieving participation of user " +
-              req.decoded.username +
-              " and contestId " +
-              req.params.contestId,
-        });
-      }
+      });
     } else {
-      try {
-        const result = await Question.find({ contestId: req.params.contestId });
-        res.send({
-          result,
-        });
-      } catch (err) {
-        res.send({
-          success: false,
-          message:
-            "Error retrieving questions from contest with id " +
-            req.params.contestId,
-        });
-      }
+      const result = await findContest();
+      return result;
     }
-  } catch (err) {
-    res.send({
-      success: false,
-      message: "Error occurred while retrieving contest with contestId ",
-    });
-  }
+
+  const findSet = async (questionIdArray) => {
+    return Question.find({ questionId: { $in: questionIdArray } })
+      .then(async (question) => {
+        if (!question) {
+          return res.status(404).send({
+            success: false,
+            message: "Question not found with id " + req.params.contestId,
+          });
+        }
+        res.send(question);
+      })
+      .catch((err) => {
+        if (err.kind === "ObjectId") {
+          return res.status(404).send({
+            success: false,
+            message: "Question not found with id " + req.params.contestId,
+          });
+        }
+        return res.status(500).send({
+          success: false,
+          message: "Error retrieving question with id " + req.params.contestId,
+        });
+      });
+  };
+
+  const findContest = async () => {
+    return Question.find({ contestId: req.params.contestId })
+      .then((question) => {
+        if (!question) {
+          return res.status(404).send({
+            success: false,
+            message: "Question not found with id " + req.params.contestId,
+          });
+        }
+        res.send(question);
+      })
+      .catch((err) => {
+        if (err.kind === "ObjectId") {
+          return res.status(404).send({
+            success: false,
+            message: "Question not found with id " + req.params.contestId,
+          });
+        }
+        return res.status(500).send({
+          success: false,
+          message: "Error retrieving question with id " + req.params.contestId,
+        });
+      });
+  };
 };

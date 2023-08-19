@@ -2,7 +2,7 @@ const Contest = require("../models/contest.model.js");
 const contests = require("../controllers/contest.controller.js");
 const setController = require("../controllers/set.controller.js");
 
-exports.updateSet = async (set) => {
+exports.updateSet = async (req, set) => {
     try {
         const contest = await Contest.findOne({ contestId: req.params.contestId });
         console.log(contest);
@@ -11,13 +11,13 @@ exports.updateSet = async (set) => {
             sets.push(set);
         }
         try {
-            let modifiedSets = await contests.updateOneSet(req, sets);
-            res.status(200).send({ success: true, message: "The update Sets are ", modifiedData: modifiedSets });
+            let modifiedSets = await contests.updateOneSet(contest, sets);
+            return modifiedSets;
         } catch (err) {
-            res.status(500).send({ success: false, message: "Error occurred while modifying sets of Contest with id " + req.params.contestId });
+            return null;
         }
     } catch (err) {
-        res.status(500).send({ success: false, message: "Error occurred while fetching Contest with id " + req.params.contestId });
+        return null;
     }
 };
 
