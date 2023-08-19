@@ -7,7 +7,6 @@
     }
 
     body {
-      position: relative;
       background: #f6f5f7;
       display: flex;
       justify-content: center;
@@ -73,11 +72,11 @@
 
     button.ghost {
       background-color: transparent;
-      border-color: rgb(255, 255, 255) fff;
+      border-color: #ffffff;
     }
 
     form {
-      background-color: rgb(255, 255, 255) fff;
+      background-color: #ffffff;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -111,7 +110,7 @@
     }
 
     .container {
-      background-color: rgb(255, 255, 255);
+      background-color: #fff;
       border-radius: 10px;
       box-shadow: 0 14px 28px rgba(0, 0, 0, 0.1),
         0 10px 10px rgba(0, 0, 0, 0.082);
@@ -187,7 +186,7 @@
       background-repeat: no-repeat;
       background-size: auto;
       background-position: 0 0;
-      color: rgb(255, 255, 255) fff;
+      color: #ffffff;
       position: relative;
       left: -100%;
       height: 100%;
@@ -295,7 +294,6 @@
           <select class="custom-select" required name="branch" type="text">
             <option disabled selected value="">Select your Branch</option>
             <option value="cse">CSE</option>
-            <option value="ai-ml">CSE (AI & ML)</option>
             <option value="cs-it">CS & IT</option>
             <option value="ece">ECE</option>
           </select>
@@ -358,7 +356,7 @@
     <div
       style="flex-grow: 1; width: 100%; display: flex; align-items: flex-end"
     >
-      <%- include('../partials/footer.ejs') %>
+      <%- include('../partials/footer') %>
     </div>
   </body>
 </html>
