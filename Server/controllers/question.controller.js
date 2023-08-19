@@ -285,27 +285,25 @@ exports.addSetGivenQIdArray = async (req, res) => {
       );
       let set = questions.map((e) => e.questionId);
       try {
-        let modifiedSets = await setController.updateSet(req,set);
-        console.log(modifiedSets)
-        if(modifiedSets == null)
-        {
+        let modifiedSets = await setController.updateSet(req, set);
+        console.log(modifiedSets);
+        if (modifiedSets == null) {
           return res.status(500).send({
             success: false,
-            message:
-              "Sets could not be modified",
+            message: "Sets could not be modified",
           });
         }
         return res.status(200).send({
-          success : true,
-          message : "The modified sets are ",
-          data : modifiedSets
-        })
-      } catch(err) {
+          success: true,
+          message: "The modified sets are ",
+          data: modifiedSets,
+        });
+      } catch (err) {
         res.status(500).send({
           success: false,
           message:
             "Some error occurred while updating questions(sets) with given message " +
-        err.message,
+            err.message,
         });
       }
     } catch (err) {
@@ -565,44 +563,6 @@ exports.deleteMultiple = (req, res) => {
 };
 
 exports.findAllContest = async (req, res) => {
-
-    const contest = await Contest.findOne({contestId : req.params.contestId});
-    if (contest.multiSet === true) {
-      participations.findParticipation(req, async (err, participation) => {
-        if (err) {
-          return res.send({ success: false, message: err || "Error occured" });
-        }
-
-        if (participation.questions.length !== 0) {
-          const result = await findSet(participation.questions);
-          return result;
-        }
-
-        let sets = contest.sets;
-        let questionIds = [];
-        let index, i;
-        for (i = 0; i < contest.sets.length; i++) {
-          let index = Math.floor(Math.random() * sets[i].length);
-          questionIds[i] = sets[i][index];
-        }
-
-        participations.updateParticipation(
-          req,
-          questionIds,
-          async (err, participation) => {
-            if (err) {
-              return res.send({ success: false, message: err || "Error occured" });
-            }
-            let result = await findSet(questionIds);
-            return result;
-          }
-        );
-      });
-    } else {
-      const result = await findContest();
-      return result;
-    }
-
   const findSet = async (questionIdArray) => {
     return Question.find({ questionId: { $in: questionIdArray } })
       .then(async (question) => {
@@ -652,4 +612,44 @@ exports.findAllContest = async (req, res) => {
         });
       });
   };
+
+  const contest = await Contest.findOne({ contestId: req.params.contestId });
+  if (contest.multiSet === true) {
+    participations.findParticipation(req, async (err, participation) => {
+      if (err) {
+        return res.send({ success: false, message: err || "Error occured" });
+      }
+
+      if (participation.questions.length !== 0) {
+        const result = await findSet(participation.questions);
+        return result;
+      }
+
+      let sets = contest.sets;
+      let questionIds = [];
+      let index, i;
+      for (i = 0; i < contest.sets.length; i++) {
+        let index = Math.floor(Math.random() * sets[i].length);
+        questionIds[i] = sets[i][index];
+      }
+
+      participations.updateParticipation(
+        req,
+        questionIds,
+        async (err, participation) => {
+          if (err) {
+            return res.send({
+              success: false,
+              message: err || "Error occured",
+            });
+          }
+          let result = await findSet(questionIds);
+          return result;
+        }
+      );
+    });
+  } else {
+    const result = await findContest();
+    return result;
+  }
 };

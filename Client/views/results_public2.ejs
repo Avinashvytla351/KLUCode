@@ -182,30 +182,28 @@
         <div class="table-center">
           <table>
             <tr>
-              <% for(let i=0;i<dataq.result.length;i++){ %>
-                <th><%= dataq.result[i].questionId %></th>
+              <% for(let i=0;i<dataq.length;i++){ %>
+                <th><%= dataq[i].questionId %></th>
               <%}%>
             </tr>
-            
               <% for(let j=0; j < datap.length; j++){ %>
                 <tr>
-              <% for(let i=0;i<dataq.result.length;i++){ %>
-                <% let qs=0; %>
-                <% for (let k = 0;  k < datap[j].submissionResults.length; k++ ){ %>
-                  <% if(dataq.result[i].questionId==datap[j].submissionResults[k].questionId) { %>
-                    <% qs=datap[i].submissionResults[j].score %>
-                   <%}}%>
-                    <% if(qs==0){ %>
-                      <td style="color: rgb(234,67,53);"><%= qs %></td>
-                    <% } else if(qs==25){ %>
-                      <td style="color: rgb(251,188,4);"><%= qs %></td>
-                    <% } else { %>
-                      <td style="color: rgb(52,168,83);"><%= qs %></td>
-                    <%}%>
-                   <%}%>
-                  </tr>
+                  <% for(let i=0;i<dataq.length;i++){ %>
+                    <% let qs=0; %>
+                    <% for (let k = 0;  k < datap[j].submissionResults.length; k++ ){ %>
+                      <% if(dataq[i].questionId==datap[j].submissionResults[k].questionId) { %>
+                        <% qs=datap[j].submissionResults[k].score %>
+                       <%}}%>
+                        <% if(qs==0){ %>
+                          <td style="color: rgb(234,67,53);"><%= qs %></td>
+                        <% } else if(qs==25){ %>
+                          <td style="color: rgb(251,188,4);"><%= qs %></td>
+                        <% } else { %>
+                          <td style="color: rgb(52,168,83);"><%= qs %></td>
+                        <%}%>
+                       <%}%>
+                      </tr>
               <%}%>
-            
           </table>
         </div>
         <div class="table-right">
@@ -216,7 +214,7 @@
             </tr>
             <% for(let i=0; i < datap.length; i++){ %>
             <tr>
-              <% let k = 0, s=dataq.result.length*100, d = new Date(datap[i].participationTime); %> <% if (datap[i].submissionResults.length !== 0){ %>
+              <% let k = 0, s=dataq.length*100, d = new Date(datap[i].participationTime); %> <% if (datap[i].submissionResults.length !== 0){ %>
               <% for (let j = 0; j < datap[i].submissionResults.length; j++ ){ %> <%
               k = k + datap[i].submissionResults[j].score %> <% } %> <% } %>
               <td class="progress-data"><%= k %> <span class="progress">
