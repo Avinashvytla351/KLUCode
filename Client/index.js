@@ -1099,7 +1099,7 @@ app.get(
     };
     request(options, function (err, response, bodyparticipation) {
       let options = {
-        url: serverRoute + "/questions/contests/" + req.params.contestId,
+        url: serverRoute + "/questions/contest/" + req.params.contestId,
         method: "get",
         headers: {
           authorization: req.cookies.token,

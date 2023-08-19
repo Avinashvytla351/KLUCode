@@ -286,7 +286,6 @@ exports.addSetGivenQIdArray = async (req, res) => {
       let set = questions.map((e) => e.questionId);
       try {
         let modifiedSets = await setController.updateSet(req, set);
-        console.log(modifiedSets);
         if (modifiedSets == null) {
           return res.status(500).send({
             success: false,
@@ -651,5 +650,46 @@ exports.findAllContest = async (req, res) => {
   } else {
     const result = await findContest();
     return result;
+  }
+};
+
+exports.findContestQuestions = async (req, res) => {
+  try {
+    const contest = await Contest.findOne({ contestId: req.params.contestId }); 
+    if (contest.multiSet === true) {
+      let sets = contest.sets;
+      const questionIds = new Set();
+      sets.forEach(sublist => {
+        sublist.forEach(id => {
+          questionIds.add(id);
+        });
+      });
+      const questionIdArray = Array.from(questionIds);
+      try {
+        const questions = await Question.find({ questionId: { $in: questionIdArray } },{questionId: 1, questionName: 1, _id: 0});
+        return res.status(200).send(questions);
+      } catch(err) {
+        return res.status(500).send({
+          success: false,
+          message: "Error retrieving questions from questionIdArray" + questionIdArray.toString(),
+        });
+      }
+
+    } else {
+      try {
+        const questions = await Question.find({contestId : req.params.contestId});
+        return res.status(200).send(questions);
+      } catch(err) {
+        return res.status(500).send({
+          success: false,
+          message: "Error retrieving questions from questionIdArray" + questionIdArray.toString(),
+        });
+      }
+    }
+  } catch(err) {
+    return res.status(500).send({
+      success: false,
+      message: "Error retrieving contest with id " + req.params.contestId,
+    });
   }
 };

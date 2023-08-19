@@ -36,7 +36,14 @@ module.exports = (app) => {
     // Retrieve a single question with questionId
     app.get("/questions/:questionId", middleware.checkToken, questions.findOne);
 
-    // Retrieve all questions with contestId
+    // Retrieve all questions with contestId only
+    app.get(
+        "/questions/contest/:contestId",
+        middleware.checkToken,
+        questions.findContestQuestions
+    );
+
+    // Retrieve all questions with contestId and update Participation
     app.get(
         "/questions/contests/:contestId",
         middleware.checkToken,
