@@ -512,19 +512,19 @@ $(document).ready(function () {
   if (getCookie("courseId")) {
     $("#tutorials").text("Practicing");
     courseId = getCookie("courseId");
-    if (courseId === "IARE_PY") {
+    if (courseId === "KLH_PY") {
       $("#select-language").append(
         `<option mode = "python" value="34"> Python (3.6.0) </option>`
       );
-    } else if (courseId === "IARE_C") {
+    } else if (courseId === "KLH_C") {
       $("#select-language").append(
         `<option mode = "c" value="4"> C (gcc 7.2.0) </option>`
       );
-    } else if (courseId === "IARE_CPP") {
+    } else if (courseId === "KLH_CPP") {
       $("#select-language").append(
         `<option mode = "cpp" value="10"> C++ (g++ 7.2.0) </option>`
       );
-    } else if (courseId === "IARE_JAVA") {
+    } else if (courseId === "KLH_JAVA") {
       $("#select-language").append(
         `<option mode = "java" value="26"> Java (OpenJDK 9 with Eclipse OpenJ9) </option>`
       );
@@ -907,10 +907,10 @@ function getSubmission() {
 getSubmission();
 
 var course_language = {
-  IARE_C: 4,
-  IARE_CPP: 10,
-  IARE_JAVA: 26,
-  IARE_PY: 34,
+  KLH_C: 4,
+  KLH_CPP: 10,
+  KLH_JAVA: 26,
+  KLH_PY: 34,
 };
 
 var sources = {

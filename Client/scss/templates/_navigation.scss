@@ -1,8 +1,8 @@
-.navigation{
+.navigation {
   padding: 40px 130px;
-  transition: .3s ease;
+  transition: 0.3s ease;
   &.nav-bg {
-    background-color: $iare;
+    background-color: $klh;
     padding: 15px 100px;
     @include desktop {
       padding: 15px 20px;
@@ -10,23 +10,23 @@
   }
   @include desktop {
     padding: 20px;
-    background: $iare;
+    background: $klh;
   }
 }
 
-.navbar{
-  .nav-item{
-    .nav-link{
+.navbar {
+  .nav-item {
+    .nav-link {
       font-family: $tertiary-font;
       text-transform: uppercase;
       padding: 15px;
     }
-    &.active{
+    &.active {
       font-weight: bold;
     }
   }
 }
 
-.navbar-dark .navbar-nav .nav-link{
+.navbar-dark .navbar-nav .nav-link {
   color: $white;
 }

@@ -66,11 +66,12 @@ let checkSignIn = async (req, res, next) => {
 
 var imageUrl = "";
 function imageRetrive(req, res) {
-  let imageUrl = "https://iare-data.s3.ap-south-1.amazonaws.com/uploads/";
-  let rollno = req.cookies.username;
-  let branch = req.cookies.branch;
-  var testUrl = imageUrl + branch + "/" + rollno + ".jpg";
-  return testUrl;
+  let imageUrl =
+    "https://lh3.googleusercontent.com/drive-viewer/AITFw-xVoErwzmL2DORL_9xdP8EZKy8EAkkeVtMR4cv9vvCf8dO5mHBKRXZmc-zemtdeJ22VJJ-xxl5BEXGs2pmOkHxfQZJrUQ=s2560";
+  //let rollno = req.cookies.username;
+  //let branch = req.cookies.branch;
+  //var testUrl = imageUrl + branch + "/" + rollno + ".jpg";
+  return imageUrl;
 }
 
 app.get("/", async (req, res) => {

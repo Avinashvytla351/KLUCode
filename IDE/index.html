@@ -202,18 +202,14 @@
     let a = getCookie("username") === "ADMIN";
     let b = getCookie("username");
     b = b.slice(0, 4);
-    let c = b == "IARE" || b == "iare";
+    let c = b == "KLH" || b == "klh";
     $(document).ready(function () {
       let branch = getCookie("branch");
       let username = getCookie("username");
       if (branch) {
         $("#userImage").attr(
           "src",
-          "https://iare-data.s3.ap-south-1.amazonaws.com/uploads/" +
-            branch +
-            "/" +
-            username +
-            ".jpg"
+          "https://lh3.googleusercontent.com/drive-viewer/AITFw-xVoErwzmL2DORL_9xdP8EZKy8EAkkeVtMR4cv9vvCf8dO5mHBKRXZmc-zemtdeJ22VJJ-xxl5BEXGs2pmOkHxfQZJrUQ=s2560"
         );
         document.getElementById("username").innerHTML = username;
       }
