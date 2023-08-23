@@ -841,3 +841,24 @@ exports.updatePassword = (req, res) => {
     });
   }
 };
+
+exports.makeVerify = (req, res) => {
+  User.findOneAndUpdate(
+    { username: req.body.username },
+    {
+      $set: {
+        isVerified: true,
+      },
+    }
+  )
+    .then(() => {
+      res.send({
+        success: true,
+      });
+    })
+    .catch(() => {
+      res.send({
+        success: false,
+      });
+    });
+};
