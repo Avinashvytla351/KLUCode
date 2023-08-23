@@ -6,7 +6,7 @@
 
     <link rel="stylesheet" href="../css/navadmin.css" />
 
-    <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
+    <link rel="icon" type="image/png" href="../../images/logo-backup2.png" />
 
     <!-- Bootstrap -->
     <link
@@ -100,12 +100,11 @@
       }
 
       body {
-        position: relative;
+        background: #41228e;
         overflow-x: auto;
       }
 
       body {
-        position: relative;
         line-height: 1.2;
         font-family: "Roboto", sans-serif;
         -webkit-font-smoothing: antialiased;
@@ -164,7 +163,7 @@
   </head>
 
   <body>
-    <%- include('./partials/adminpanel') %>
+    <%- include ("../views/partials/adminpanel") -%>
     <br /><br /><br /><br /><br />
     <section class="page-title bg-white position-relative" style="height: 8vh">
       <div class="container">
@@ -257,6 +256,7 @@
               <th>Email</th>
               <th>After Created(HH:MM)</th>
               <th>Delete</th>
+              <th>Verify</th>
             </tr>
           </thead>
           <tbody>
@@ -289,6 +289,53 @@
                   >Delete User</a
                 >
               </td>
+              <td>
+                <button
+                  type="button"
+                  style="
+                    outline: none;
+                    background: rgb(19, 180, 19);
+                    border: none;
+                    border-radius: 1mm;
+                    color: white;
+                  "
+                  onclick="verifyUser(this ,'<%= data[i].username %>')"
+                >
+                  Verify User
+                </button>
+
+                <script>
+                  function verifyUser(verBtn, username) {
+                    try {
+                      var url = "<%= data.serverurl %>/admin/makeVerify/";
+                      $.ajax({
+                        // data: { arr: body1 },
+                        async: false,
+                        // enctype: 'multipart/form-data',
+                        url: url,
+                        headers: { Authorization: "<%=token%>" },
+                        type: "POST",
+                        data: JSON.stringify({
+                          username: username,
+                        }),
+                        cache: false,
+                        contentType: "application/json",
+                        processData: false,
+                        dataType: "json",
+                        success: function (response) {
+                          verBtn.disabled = true;
+                          verBtn.style.background = "rgba(19, 180, 19, 0.5)";
+                        },
+                        error: function (error) {
+                          console.log(`Error ${JSON.stringify(error)}`);
+                        },
+                      });
+                    } catch (err) {
+                      console.log(err);
+                    }
+                  }
+                </script>
+              </td>
             </tr>
             <% } %>
           </tbody>
@@ -310,8 +357,8 @@
     </section>
     <br />
     <br />
-    <script src="../../adminjs/classie.js"></script>
-    <script src="../../adminjs/gnmenu.js"></script>
+    <script src="/adminjs/classie.js"></script>
+    <script src="/adminjs/gnmenu.js"></script>
     <script>
       new gnMenu(document.getElementById("gn-menu"));
       document.getElementById("token").value = "<%= token %>";
